@@ -6,7 +6,7 @@ A busy car dealership has a list of customers waiting to test drive a vehicle. T
 
 ## The Brief
 
-Given customers demographics and behavioral data (see sample-data/patients.json), create an algorithm that will process a set of historical customer data and compute a score for each customer that (1 as the lowest, 10 as the highest) that represents the chance of a customer accepting the test drive offer off of the waitlist. Take in consideration that customers who have little behavior data should be randomly added to the top list as to give them a chance to be selected. Expose an api that takes a facility's location as input and returns an ordered list of 10 customers who will most likely accept the appointment offer.
+Given customers demographics and behavioural data (see sample-data/customers.json), create an algorithm that will process a set of historical customer data and compute a score for each customer that (1 as the lowest, 10 as the highest) that represents the chance of a customer accepting the test drive offer off of the waitlist. Take in consideration that customers who have little behavioural data should be randomly added to the top list as to give them a chance to be selected. Expose an api that takes a facility's location as input and returns an ordered list of 10 customers who will most likely accept the appointment offer.
 
 ## Weighting Categories
 
