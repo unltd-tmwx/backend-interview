@@ -21,7 +21,7 @@ public class CustomerScoringService : ICustomerScoringService
 
         scoredCustomers = AddCustomersWithLittleActivityToScoredCustomers(scoredCustomers);
 
-        return scoredCustomers;
+        return scoredCustomers.OrderByDescending(sc => sc.Score).ToArray();
     }
 
     static internal CustomerScoring[] Initialise(Customer[] customers, Coordinates baseCoordinates)

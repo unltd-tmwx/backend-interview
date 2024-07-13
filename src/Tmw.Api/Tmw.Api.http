@@ -1,6 +1,6 @@
-@Tmw.Api_HostAddress = http://localhost:5233
+@WebApplication1_HostAddress = https://localhost:7174
 
-GET {{Tmw.Api_HostAddress}}/weatherforecast/
+GET {{WebApplication1_HostAddress}}/api/customers/scored/51.510536/-0.595041
 Accept: application/json
 
 ###
