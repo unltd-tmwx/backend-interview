@@ -7,7 +7,7 @@ public static class SetupEndpoints
 {
     public static WebApplication MapEndpoints(this WebApplication app)
     {
-        app.MapGet("/api/customers/scored/{baseLatitude}/{baseLongitude}", async (
+        app.MapGet("/api/customers/scored/{baseLatitude}/{baseLongitude}", (
             double baseLatitude,
             double baseLongitude,
             ICustomerScoringService service) =>
