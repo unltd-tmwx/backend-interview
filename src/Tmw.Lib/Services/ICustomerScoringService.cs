@@ -4,5 +4,5 @@ namespace Tmw.Lib.Services;
 
 public interface ICustomerScoringService
 {
-    Customer[] GetScoredCustomers(Coordinates baseCoordinates);
+    Customer[] GetCustomersByScore(Coordinates baseCoordinates);
 }
