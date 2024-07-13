@@ -1,12 +1,27 @@
-﻿using Tmw.Lib.Model;
+﻿using Tmw.Lib.Data;
+using Tmw.Lib.Model;
 
 namespace Tmw.Lib.Services;
 
 public class CustomerScoringService : ICustomerScoringService
 {
+    private readonly ICustomerRepository _customerRepository;
+
+    public CustomerScoringService(ICustomerRepository customerRepository)
+    {
+        _customerRepository = customerRepository;
+    }
+
     public Customer[] GetCustomersByScore(Coordinates baseCoordinates)
     {
-        throw new NotImplementedException();
+        var customers = _customerRepository.GetAllCustomers();
+        var customerScoring = Initialise(customers, baseCoordinates);
+        customerScoring = Normalise(customerScoring);
+        var scoredCustomers = SetCustomersTotalScore(customerScoring);
+
+        scoredCustomers = AddCustomersWithLittleActivityToScoredCustomers(scoredCustomers);
+
+        return scoredCustomers;
     }
 
     static internal CustomerScoring[] Initialise(Customer[] customers, Coordinates baseCoordinates)
@@ -88,5 +103,4 @@ public class CustomerScoringService : ICustomerScoringService
 
         return highScoredCustomers.Concat(customersWithLittleActivity).ToArray();
     }
-
 }
