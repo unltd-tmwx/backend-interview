@@ -152,5 +152,32 @@ public class CustomerScoringServiceFixture
         Assert.All(computedScores, c => Assert.True(c.Score >= 0.0 && c.Score <= 10.0));
     }
 
-    
+    [Fact]
+    public void CanGetCustomersWithLittleActivity()
+    {
+        var customers = new CustomerSampleRepository().GetAllCustomers();
+        var scoringDtos = CustomerScoringService.Initialise(customers, new Coordinates(0.0, 0.0));
+        var normalisedCustomers = CustomerScoringService.Normalise(scoringDtos);
+        var computedScores = CustomerScoringService.SetCustomersTotalScore(normalisedCustomers);
+
+        // act
+        var inactiveCustomers = CustomerScoringService.RandomCustomersWithLittleActivity(computedScores);
+
+        Assert.True(inactiveCustomers.Length == 3);
+    }
+
+    [Fact]
+    public void CanGetFinalScoredSetIncludingCustomersWithLittleActivity()
+    {
+        var customers = new CustomerSampleRepository().GetAllCustomers();
+        var scoringDtos = CustomerScoringService.Initialise(customers, new Coordinates(0.0, 0.0));
+        var normalisedCustomers = CustomerScoringService.Normalise(scoringDtos);
+        var computedScores = CustomerScoringService.SetCustomersTotalScore(normalisedCustomers);
+
+        // act
+        var finalScoredSet = CustomerScoringService.AddCustomersWithLittleActivityToScoredCustomers(computedScores);
+
+        Assert.True(finalScoredSet.Length == 10);
+        Assert.True(finalScoredSet.Count(c => c.Score == 10) == 1);
+    }
 }

@@ -60,4 +60,33 @@ public class CustomerScoringService : ICustomerScoringService
 
         return computedScores.ToArray();
     }
+
+    static internal Customer[] RandomCustomersWithLittleActivity(Customer[] customers)
+    {
+        var takeCount = customers.Count() / 10;
+
+        // take bottom 10% of customers by activity and then take 3 random customers from that set
+        var randomSet = customers
+            .Select(c => new { c, Activity = c.AcceptedOffers + c.CancelledOffers })
+            .OrderBy(n => n.Activity)
+            .Take(takeCount)
+            .OrderBy(c => Guid.NewGuid()) //random order
+            .Select(c => c.c)
+            .Take(3);
+
+        return randomSet.ToArray();
+    }
+
+    static internal Customer[] AddCustomersWithLittleActivityToScoredCustomers(Customer[] scoredCustomers)
+    {
+        var customersWithLittleActivity = RandomCustomersWithLittleActivity(scoredCustomers);
+
+        var highScoredCustomers = scoredCustomers
+            .Except(customersWithLittleActivity)
+            .OrderByDescending(c => c.Score)
+            .Take(7).ToArray();
+
+        return highScoredCustomers.Concat(customersWithLittleActivity).ToArray();
+    }
+
 }
