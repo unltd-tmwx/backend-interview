@@ -1,0 +1,6 @@
+@Tmw.Api_HostAddress = http://localhost:5233
+
+GET {{Tmw.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
