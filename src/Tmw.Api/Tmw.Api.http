@@ -1,0 +1,6 @@
+@WebApplication1_HostAddress = https://localhost:7174
+
+GET {{WebApplication1_HostAddress}}/api/customers/scored/51.510536/-0.595041
+Accept: application/json
+
+###
