@@ -139,7 +139,18 @@ public class CustomerScoringServiceFixture
         Assert.All(overallScore, score => Assert.True(score >= 0.0));
     }
 
-    
+    [Fact]
+    public void CanGetCustomersTotalScores()
+    {
+        var customers = new CustomerSampleRepository().GetAllCustomers();
+        var scoringDtos = CustomerScoringService.Initialise(customers, new Coordinates(0.0, 0.0));
+        var normalisedCustomers = CustomerScoringService.Normalise(scoringDtos);
+
+        // act
+        var computedScores = CustomerScoringService.SetCustomersTotalScore(normalisedCustomers);
+
+        Assert.All(computedScores, c => Assert.True(c.Score >= 0.0 && c.Score <= 10.0));
+    }
 
     
 }

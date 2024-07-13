@@ -49,4 +49,15 @@ public class CustomerScoringService : ICustomerScoringService
         .Select(c => c)
         .ToArray();
     }
+
+    static internal Customer[] SetCustomersTotalScore(CustomerScoring[] scoredCustomers)
+    {
+        var (min, max) = GetRangeMinMax(scoredCustomers.Select(c => c.TotalScore).ToArray());
+        var computedScores = scoredCustomers.Select(c => c.Customer with
+        {
+            Score = NormaliseToDefinedRange(c.TotalScore, min, max)
+        });
+
+        return computedScores.ToArray();
+    }
 }

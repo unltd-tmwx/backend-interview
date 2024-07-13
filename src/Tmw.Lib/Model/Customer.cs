@@ -7,7 +7,8 @@ public record Customer(
     int AcceptedOffers,
     int CancelledOffers,
     int AverageReplyTime,
-    Coordinates Location
+    Coordinates Location,
+    double Score = 0.0
     );
 
 public record Coordinates(double Latitude, double Longitude)
