@@ -49,4 +49,25 @@ public class SampleDataHelperFixtures
         Assert.Equal("46.7110", customerDto.Location.Latitude);
         Assert.Equal("-63.1150", customerDto.Location.Longitude);
     }
+
+    [Fact]
+    public void CanMapToCustomer()
+    {
+        var json = SampleDataHelper.ReadEmbeddedCustomerData();
+        var customerDtos = SampleDataHelper.DeserializeCustomerData(json);
+        var customerDto = customerDtos[0];
+
+        // act 
+        var customer = customerDto.Map();
+
+        Assert.NotNull(customer);
+        Assert.Equal(customerDto.Id, customer.Id);
+        Assert.Equal(customerDto.Name, customer.Name);
+        Assert.Equal(customerDto.Age, customer.Age);
+        Assert.Equal(customerDto.AcceptedOffers, customer.AcceptedOffers);
+        Assert.Equal(customerDto.CancelledOffers, customer.CancelledOffers);
+        Assert.Equal(customerDto.AverageReplyTime, customer.AverageReplyTime);
+        Assert.Equal(46.7110, customer.Location.Latitude);
+        Assert.Equal(-63.1150, customer.Location.Longitude);
+    }
 }
