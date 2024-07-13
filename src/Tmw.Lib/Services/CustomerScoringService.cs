@@ -29,4 +29,24 @@ public class CustomerScoringService : ICustomerScoringService
         var score = 1 + (val - min) * 9 / (max - min);
         return invert ? 10 - score : score;
     }
+
+    static internal CustomerScoring[] Normalise(CustomerScoring[] customers)
+    {
+        var (minAge, maxAge) = GetRangeMinMax(customers.Select(c => (double)c.Customer.Age).ToArray());
+        var (minDist, maxDist) = GetRangeMinMax(customers.Select(c => c.DistanceFromBase).ToArray());
+        var (minAccOff, maxAccOff) = GetRangeMinMax(customers.Select(c => (double)c.Customer.AcceptedOffers).ToArray());
+        var (minCanOff, maxCanOff) = GetRangeMinMax(customers.Select(c => (double)c.Customer.CancelledOffers).ToArray());
+        var (minAvTime, maxAvTime) = GetRangeMinMax(customers.Select(c => (double)c.Customer.AverageReplyTime).ToArray());
+
+        return customers.Select(c => c with
+        {
+            AgeScore = NormaliseToDefinedRange(c.Customer.Age, minAge, maxAge),
+            DistanceScore = NormaliseToDefinedRange(c.DistanceFromBase, minDist, maxDist, true),
+            AcceptedOffersScore = NormaliseToDefinedRange(c.Customer.AcceptedOffers, minAccOff, maxAccOff),
+            CancelledOffersScore = NormaliseToDefinedRange(c.Customer.CancelledOffers, minCanOff, maxCanOff, true),
+            AverageReplyTimeScore = NormaliseToDefinedRange(c.Customer.AverageReplyTime, minAvTime, maxAvTime, true)
+        })
+        .Select(c => c)
+        .ToArray();
+    }
 }

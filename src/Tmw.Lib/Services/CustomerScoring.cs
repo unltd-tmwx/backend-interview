@@ -11,5 +11,10 @@ internal record CustomerScoring(
     double CancelledOffersScore,
     double AverageReplyTimeScore)
 {
-    internal double TotalScore => AgeScore + DistanceScore + AcceptedOffersScore + CancelledOffersScore + AverageReplyTimeScore;
+    internal double TotalScore => 
+        (AgeScore * WeightingCategories.DemographicAge)
+        + (DistanceScore * WeightingCategories.DemographicDistance)
+        + (AcceptedOffersScore * WeightingCategories.BehaviourAcceptedOffers)
+        + (CancelledOffersScore * WeightingCategories.BehaviourCancelledOffers)
+        + (AverageReplyTimeScore * WeightingCategories.BehaviourReplyTime);
 };

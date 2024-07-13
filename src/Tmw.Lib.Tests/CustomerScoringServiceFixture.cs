@@ -110,5 +110,36 @@ public class CustomerScoringServiceFixture
         Assert.Equal( 9, normalisedCancelledOffersSet.Max());
     }
 
+    [Fact]
+    public void CanNormaliseAllCustomerCategories()
+    {
+        var customers = new CustomerSampleRepository().GetAllCustomers();
+        var scoringDtos = CustomerScoringService.Initialise(customers, new Coordinates(0.0, 0.0));
+
+        // act
+        var normalisedCustomers = CustomerScoringService.Normalise(scoringDtos);
+
+        Assert.All(normalisedCustomers, c => Assert.True(c.AgeScore >= 0.0 && c.AgeScore <= 10.0));
+        Assert.All(normalisedCustomers, c => Assert.True(c.DistanceScore >= 0.0 && c.DistanceScore <= 10.0));
+        Assert.All(normalisedCustomers, c => Assert.True(c.AcceptedOffersScore >= 0.0 && c.AcceptedOffersScore <= 10.0));
+        Assert.All(normalisedCustomers, c => Assert.True(c.CancelledOffersScore >= 0.0 && c.CancelledOffersScore <= 10.0));
+        Assert.All(normalisedCustomers, c => Assert.True(c.AverageReplyTimeScore >= 0.0 && c.AverageReplyTimeScore <= 10.0));
+    }
+
+    [Fact]
+    public void CanGetOverallScore()
+    {
+        var customers = new CustomerSampleRepository().GetAllCustomers();
+        var scoringDtos = CustomerScoringService.Initialise(customers, new Coordinates(0.0, 0.0));
+        var normalisedCustomers = CustomerScoringService.Normalise(scoringDtos);
+
+        // act
+        var overallScore = normalisedCustomers.Select(c => c.TotalScore).ToArray();
+
+        Assert.All(overallScore, score => Assert.True(score >= 0.0));
+    }
+
+    
+
     
 }
