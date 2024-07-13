@@ -58,6 +58,7 @@ public class CustomerScoringServiceFixture
         var normalisedAgeSet = customerAgeRange.Select(age => CustomerScoringService.NormaliseToDefinedRange(age, rangeMin, rangeMax)).ToArray();
 
         Assert.All(normalisedAgeSet, age => Assert.True(age >= 0.0 && age <= 10.0));
-
+        Assert.Equal(normalisedAgeSet.Min(), 1.0);
+        Assert.Equal(normalisedAgeSet.Max(), 10.0);
     }
 }
